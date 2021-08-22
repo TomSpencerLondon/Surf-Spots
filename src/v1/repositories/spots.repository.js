@@ -1,5 +1,4 @@
-// const connection = require('../config/database/getConnection');
-const mysql = require('mysql2/promise');
+const config = require('../config/database/config');
 
 function formatDate(date_visited) {
     const rsDate = new Date(date_visited);
@@ -12,28 +11,18 @@ function formatDate(date_visited) {
 }
 
 const getSpots = async () => {
-    const result = [];
-    const connection = await mysql.createConnection({
-        host: "localhost",
-        user: "root",
-        password: "password",
-        database: "surfing"
-    });
+    const mysql = require('mysql2/promise');
+    const connection = await mysql.createConnection(config);
     const [rows, fields] = await connection.query("SELECT * from spots");
-    rows.forEach((row) => {
-        let spot = {
+    return rows.map((row) => {
+        return ({
             spot_id: row.spot_id,
             name: row.name,
             address: row.address,
             description: row.description,
             date_visited: formatDate(row.date_visited)
-        };
-        result.push(
-            spot
-        )
+        });
     });
-
-    return result;
 }
 
 module.exports = {
