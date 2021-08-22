@@ -9,13 +9,6 @@ const getSpots = async () => {
     }
 }
 
-// const getSpot = async (id) => {
-//     return getSpots().then(spots => {
-//         return spots.find(spot => parseInt(spot.spot_id, 10) === parseInt(id, 10));
-//     })
-//
-// }
-
 const getSpot = async (id) => {
     const spots = await getSpots();
     return spots.find(spot => parseInt(spot.spot_id, 10) === parseInt(id, 10));
