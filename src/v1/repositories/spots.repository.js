@@ -1,27 +1,40 @@
-const getSpots = () => [
-    {
-        spot_id: 1,
-        name: 'The Wave',
-        address: 'Washingpool Farm, Main Rd, Easter Compton, Bristol BS35 5RE',
-        description: 'The Wave is an inland surf destination where everyone can surf on consistent, safe waves all year round. Fantastic variety of waves to suit all levels of surfer, from beginner to expert.',
-        date_visited: '2021-08-15'
-    },
-    {
-        spot_id: 2,
-        name: 'Croyde',
-        address: 'Croyde Bay, Croyde, Braunton EX33 1NU',
-        description: 'Thought to be one of the best places to surf in the UK, in competition with Cornish waves, Croyde gets our vote any day. The waves are good on all tides, but especially at low tide.',
-        date_visited: '2020-09-10'
-    },
-    {
-        spot_id: 3,
-        name: 'Fistral',
-        address: 'Fistral Beach, Newquay, Cornwall TR7 1HY',
-        description: 'This splendid beach offers excellent water for surfing and body boarding.',
-        date_visited: '2020-08-06'
-    }
-];
+// const connection = require('../config/database/getConnection');
+const mysql = require('mysql2/promise');
 
+function formatDate(date_visited) {
+    const rsDate = new Date(date_visited);
+    const resultDate = new Date();
+    resultDate.setDate(rsDate.getDate());
+    resultDate.setMonth(rsDate.getMonth());
+    resultDate.setFullYear(rsDate.getFullYear());
+    const date = resultDate.toISOString().slice(0, 10);
+    return date;
+}
+
+const getSpots = async () => {
+    const result = [];
+    const connection = await mysql.createConnection({
+        host: "localhost",
+        user: "root",
+        password: "password",
+        database: "surfing"
+    });
+    const [rows, fields] = await connection.query("SELECT * from spots");
+    rows.forEach((row) => {
+        let spot = {
+            spot_id: row.spot_id,
+            name: row.name,
+            address: row.address,
+            description: row.description,
+            date_visited: formatDate(row.date_visited)
+        };
+        result.push(
+            spot
+        )
+    });
+
+    return result;
+}
 
 module.exports = {
     getSpots: getSpots,
