@@ -10,8 +10,8 @@ describe('spots.service.js', function () {
     describe('getSpot(1)', function() {
         describe('valid args', function () {
             describe('1', function () {
-                it(`returns the spot '1'`, function () {
-                    const result = getSpot('1');
+                it(`returns the spot '1'`, async function () {
+                    const result = await getSpot('1');
                     expect(result).to.deep.include({
                             spot_id: 1,
                             name: 'The Wave',

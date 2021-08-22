@@ -1,5 +1,5 @@
 {
-  "name": "Surf Spot Finder",
+  "name": "surf-spot-finder",
   "version": "1.0.0",
   "description": "App that tracks surf spots",
   "main": "app.js",
